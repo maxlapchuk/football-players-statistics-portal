@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -45,7 +46,7 @@ class Player(AbstractUser):
 
 class MatchStatistics(models.Model):
     player = models.ForeignKey(
-        to=Player,
+        to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="matches_statistics"
     )
@@ -59,6 +60,6 @@ class MatchStatistics(models.Model):
         verbose_name_plural = "matches statistics"
 
     def __str__(self):
-        return (f"Statistics of {self.player.first_name} {self.player.last_name}: "
+        return (f"Statistics of {str(self.player)}: "
                 f"played {self.minutes_played} minutes, scored {self.goals}, assisted {self.assists}.\n"
                 f"Match played at {self.played_at}.")
